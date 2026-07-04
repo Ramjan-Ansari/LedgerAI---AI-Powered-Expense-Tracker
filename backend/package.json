@@ -5,8 +5,10 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemn server.js",
-    "server": "node server.js"
+    "start": "nodemon server.js",
+    "server": "nodemon server.js",
+    "migrate" : "node scripts.js",
+    "migrate:reset" : "node scripts/migrate.js --reset"
   },
   "author": "Ramjan Ansari",
   "license": "ISC",
