@@ -1,6 +1,7 @@
 import exress from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import authRouter from './routes/authRoutes.js';
 
 dotenv.config();
 
@@ -13,6 +14,8 @@ app.use(exress.json());
 app.get('/', (req, res) => {
     res.json({message: 'LedgerAI - AI Expense Tracker API is running..'});
 })
+
+app.use('/api/auth', authRouter);
 
 app.listen(PORT, ()=>{
     console.log(`server is running on port ${PORT}`);

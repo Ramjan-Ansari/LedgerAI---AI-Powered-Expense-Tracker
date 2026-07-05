@@ -55,8 +55,7 @@ CREATE TABLE ai_insights (
     period_start DATE NOT NULL,
     period_end DATE NOT NULL,
     content_json JSONB NOT NULL,
-    created_at TIMESTAMP DEFAULT NOW(),
+    created_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE INDEX idx_insights_user_created ON ai_insights(user_id, created_at DESC);
- 

@@ -13,9 +13,9 @@ const DROP_ALL = `
     DROP TABLE IF EXISTS transactions CASCADE;
     DROP TABLE IF EXISTS categories CASCADE;
     DROP TABLE IF EXISTS users CASCADE;
-`
+`;
 
-const runMIgration = async () => {
+const runMigration = async () => {
     const shouldRest = process.argv.includes('--reset');
     const schemaPath = path.join(__dirname, '..', 'sql', 'schema.sql');
 
@@ -40,3 +40,5 @@ const runMIgration = async () => {
         await pool.end();
     }
 }
+
+runMigration();
