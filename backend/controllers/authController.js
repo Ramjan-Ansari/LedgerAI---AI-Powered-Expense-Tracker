@@ -4,7 +4,7 @@ import pool from '../config/db.js';
 import { defaultCategories } from '../utils/defaultCategories.js';
 
 const signToken = (userId) => {
-    jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '7d' });
+    return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '7d' });
 }
 
 const register = async (req, res) => {
