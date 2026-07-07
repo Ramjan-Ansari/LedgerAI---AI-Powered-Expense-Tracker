@@ -2,6 +2,7 @@ import exress from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import authRouter from './routes/authRoutes.js';
+import categoryRouter from './routes/categoryRoutes.js';
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/auth', authRouter);
+app.use('/api/categories', categoryRouter);
 
 app.listen(PORT, ()=>{
     console.log(`server is running on port ${PORT}`);
