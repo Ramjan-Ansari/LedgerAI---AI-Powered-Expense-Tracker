@@ -8,33 +8,33 @@ const signToken = (userId) => {
 }
 
 const register = async (req, res) => {
-    const { name , email, password, currency='USD' } = req.body;
+    const { name, email, password, currency = 'USD' } = req.body;
 
-    if(!name || !email || !password){
+    if (!name || !email || !password) {
         return res.status(400).json({ message: 'Name, email and password are required' });
     }
 
-    if(password.length < 7){
+    if (password.length < 7) {
         return res.status(400).json({ message: 'Password must be at least 7 characters long' });
     }
 
-    const clint = await pool.connect();
+    const client = await pool.connect();
     try {
-        const existingUser = await clint.query('SELECT id FROM users WHERE email = $1', [email]);
-        if(existingUser.rows.length > 0){
+        const existingUser = await client.query('SELECT id FROM users WHERE email = $1', [email]);
+        if (existingUser.rows.length > 0) {
             return res.status(400).json({ message: 'User already exists' });
         }
 
-        await clint.query('BEGIN');
+        await client.query('BEGIN');
 
         const salt = await bcrypt.genSalt(10);
-        const PasswordHash = await bcrypt.hash(password, salt);
+        const passwordHash = await bcrypt.hash(password, salt);
 
-        const newUser = await clint.query(
+        const newUser = await client.query(
             `INSERT INTO users (name, email, password_hash, currency)
-            VALUES ($1, $2, $3, $4) 
+            VALUES ($1, $2, $3, $4)
             RETURNING id, name, email, currency, created_at`,
-            [name, email, PasswordHash, currency]
+            [name, email, passwordHash, currency]
         );
 
         const user = newUser.rows[0];
