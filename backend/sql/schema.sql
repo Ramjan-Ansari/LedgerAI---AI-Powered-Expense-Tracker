@@ -43,7 +43,7 @@ CREATE TABLE budgets (
     amount DECIMAL(12, 2) NOT NULL CHECK (amount >= 0),
     period VARCHAR(10) NOT NULL DEFAULT 'monthly' CHECK (period IN ('weekly', 'monthly')),
     start_date DATE NOT NULL,
-    end_date DATE NOT NULL,
+    -- end_date DATE NOT NULL,
     created_at TIMESTAMP DEFAULT NOW(),
     UNIQUE (user_id, category_id, period)
 );

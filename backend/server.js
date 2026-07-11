@@ -1,9 +1,11 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+
 import authRouter from './routes/authRoutes.js';
 import categoryRouter from './routes/categoryRoutes.js';
 import transactionRouter from './routes/transactionRoutes.js';
+import budgeRouter from './routes/budgetRoutes.js';
 
 dotenv.config();
 
@@ -20,6 +22,7 @@ app.get('/', (req, res) => {
 app.use('/api/auth', authRouter);
 app.use('/api/categories', categoryRouter);
 app.use('/api/transactions', transactionRouter);
+app.use('/api/budgets', budgeRouter);
 
 app.listen(PORT, ()=>{
     console.log(`server is running on port ${PORT}`);
