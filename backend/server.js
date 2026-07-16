@@ -7,6 +7,7 @@ import categoryRouter from './routes/categoryRoutes.js';
 import transactionRouter from './routes/transactionRoutes.js';
 import budgeRouter from './routes/budgetRoutes.js';
 import dashboardRouter from './routes/dashboardRoutes.js';
+import insightRouter from './routes/insightRoutes.js';
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ app.use('/api/categories', categoryRouter);
 app.use('/api/transactions', transactionRouter);
 app.use('/api/budgets', budgeRouter);
 app.use('/api/dashboard', dashboardRouter);
+app.use('/api/insights', insightRouter);
 
 app.listen(PORT, ()=>{
     console.log(`server is running on port ${PORT}`);

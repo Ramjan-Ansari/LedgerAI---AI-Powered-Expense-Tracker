@@ -1,4 +1,5 @@
 import pool from '../config/db.js';
+import { analyzeTransactionList } from '../utils/gimini.js';
 
 const getTransactions = async (req, res) => {
     const { startDate, endDate, categoryId, type, search, limit = 50, offset = 0 } = req.query;
@@ -154,6 +155,44 @@ const deleteTransaction = async (req, res ) => {
     } catch (error) {
         console.error("deleteTransaction error:", error);
         res.status(500).json({ message: 'Server error' });
+    }
+}
+
+export const analyzeTransactions = async (req, res) => {
+    const { transactionIds } = req.body;
+
+    if(!Array.isArray(transactionIds) || transactionIds.length === 0) {
+        return res.status(400).json({ message: 'transactionIds array is required' });
+    }
+
+    const ids = transactionIds.slice(0, 50);
+
+    try {
+        const result = await pool.query(
+            `SELECT t.id, t.amount, t.type, t.description, t.transaction_date,
+                c.name AS category_name
+             FROM transactions t
+             LEFT JOIN categories c ON c.id = t.category_id
+             WHERE t.user_id = $1 AND t.id = ANY($2::int[])
+             ORDER BY t.transaction_date DESC
+            `,
+            [req.userId, ids]
+        );
+
+        if(result.rows.length === 0){
+            return res.status(404).json({ message: 'No transactions found for analysis' });
+        }
+        const userRes = await pool.query('SELECT currency FROM users WHERE id = $1', [req.userId]);
+        const currency = userRes.rows[0]?.currency || 'USD';
+
+        const analysis = await analyzeTransactionList({
+            transactions: result.rows,
+            currency,
+        });
+        res.json(analysis)
+    } catch (error) {
+        console.error('AnalyzeTransactions error:', error);
+        res.status(500).json({ message: error.message || 'Server error' });        
     }
 }
 

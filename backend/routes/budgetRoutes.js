@@ -1,5 +1,5 @@
 import express from 'express';
-import { getBudgets, updateBudget, createBudget, deleteBudget } from '../controllers/budgetController.js';
+import { getBudgets, updateBudget, createBudget, deleteBudget, analyzeBudgets } from '../controllers/budgetController.js';
 
 import { protect } from '../middleware/authMiddleware.js'
 
@@ -10,5 +10,6 @@ budgeRouter.get('/', getBudgets);
 budgeRouter.post('/', createBudget);
 budgeRouter.put('/:id', updateBudget);
 budgeRouter.delete('/:id', deleteBudget);
+budgeRouter.post('/analyze', analyzeBudgets)
 
 export default budgeRouter;
