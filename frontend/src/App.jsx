@@ -1,13 +1,13 @@
+import { Routes, Route } from 'react-router-dom';
 import './App.css'
+import Layout from './components/Layout.jsx'
 
 function App() {
-
   return (
-    <>
-    <h1>Hello World</h1>
-
-    </>
+    <Routes>
+      <Route path='/' element={ <Layout /> } />
+    </Routes>
   )
 }
 
-export default App
+export default App;
