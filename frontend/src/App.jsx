@@ -1,11 +1,19 @@
 import { Routes, Route } from 'react-router-dom';
-import './App.css'
 import Layout from './components/Layout.jsx'
+import Register from './pages/Register.jsx';
+import Login from './pages/Login.jsx';
+import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 function App() {
   return (
     <Routes>
-      <Route path='/' element={ <Layout /> } />
+      <Route path='/login' element={ <Login /> } />
+      <Route path='/register' element={ <Register /> } />
+      <Route path='/' element={
+        <ProtectedRoute >
+          <Layout /> 
+        </ProtectedRoute>
+      } />
     </Routes>
   )
 }

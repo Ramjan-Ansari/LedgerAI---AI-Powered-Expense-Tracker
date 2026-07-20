@@ -1,5 +1,5 @@
 import { Bell, Search } from 'lucide-react';
-import { useState } from 'react';
+import { useAuth } from '../context/AuthContext.jsx';
 
 const greeting = () => {
     const h = new Date().getHours();
@@ -16,7 +16,7 @@ const formatToday = () =>
     });
 
 const Topbar = () => {
-    const [user, setUser ] = useState("");
+    const { user } = useAuth();
     const firstName = user?.name?.split(' ')[0] || '';
 
     return (
