@@ -6,6 +6,7 @@ dotenv.config({ path: "../.env" });
 
 
 const ai = new GoogleGenAI({ apiKey: process.env.GIMINI_API_KEY });
+const DEFAULT_GEMINI_MODEL = 'gemini-3.5-flash';
 
 if (!process.env.GIMINI_API_KEY) {
     console.error('WARNING: GIMINI_API_KEY is not set. AI features will not work.');
@@ -15,7 +16,7 @@ if (!process.env.GIMINI_API_KEY) {
 const stripeMarkdown = (text) => {
     let cleaned = text.trim();
 
-    if (cleaned.startWith('```json')) {
+    if (cleaned.startsWith('```json')) {
         cleaned = cleaned.replace(/```json\n?/g, '').replace(/```\n$/g, '');
     } else if (cleaned.startsWith('```')) {
         cleaned = cleaned.replace(/```\n?/g, '');
@@ -68,13 +69,14 @@ const generateMonthlyInsight = async ({totalIncome, totalExpenses, savingsRate, 
 
     try {
         const response = await ai.models.generateContent({
-            model: 'gemini-2.5-pro',
+            model: DEFAULT_GEMINI_MODEL,
             contents: prompt,
         });    
 
         const cleaned = stripeMarkdown(response.text);
         return JSON.parse(cleaned);
     } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
         console.error('Gimini API error (monthly insight):', error);
         throw new Error('Failed to generate monthly insight. Please try again...');
     }
@@ -108,7 +110,7 @@ const generateBudgetAlert = async ({ categoryName, budgetAmount, spendAmount, da
 
     try {
         const response = await ai.models.generateContent({
-            model: 'gemini-2.5-pro',
+            model: DEFAULT_GEMINI_MODEL,
             contents: prompt,
         })
         const cleaned = stripeMarkdown(response.text);
@@ -148,7 +150,7 @@ const generateSavingsTips = async ({ topCategories, monthlyIncome, currency = 'U
 
     try {
         const response = await ai.models.generateContent({
-            model: 'gemini-2.5-pro',
+            model: DEFAULT_GEMINI_MODEL,
             contents: prompt
         })
         const cleaned = stripeMarkdown(response.text);
@@ -167,8 +169,8 @@ const analyzeTransactionList = async ({ transactions, currency = 'USD' }) => {
         if(d instanceof Date){
             const y = d.getFullYear();
             const m = String(d.getMonth() + 1).padStart(2, '0');
-            const d = String(d.getDate()).padStart(2, '0');
-            return `${y}-${m}-${d}`
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${y}-${m}-${day}`
         }
         return String(d).split('T')[0]
     };
@@ -197,7 +199,7 @@ const analyzeTransactionList = async ({ transactions, currency = 'USD' }) => {
 
     try {
         const response = await ai.models.generateContent({
-            model: 'gemini-2.5-pro',
+            model: DEFAULT_GEMINI_MODEL,
             contents: prompt
         });
         const cleaned = stripeMarkdown(response.text);
@@ -238,7 +240,7 @@ const analyzeBudgetList = async ({ budgets, currency = 'USD' }) => {
 
     try {
         const response = await ai.models.generateContent({
-            model: 'gemini-2.5-pro',
+            model: DEFAULT_GEMINI_MODEL,
             contents: prompt
         });
         const cleaned = stripeMarkdown(response.text);

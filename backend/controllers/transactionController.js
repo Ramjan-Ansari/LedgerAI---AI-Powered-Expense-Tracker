@@ -189,7 +189,7 @@ export const analyzeTransactions = async (req, res) => {
             transactions: result.rows,
             currency,
         });
-        res.json(analysis)
+        res.json(analysis);
     } catch (error) {
         console.error('AnalyzeTransactions error:', error);
         res.status(500).json({ message: error.message || 'Server error' });        
